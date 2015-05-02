@@ -1,11 +1,13 @@
 // HAR 1.2 implementation
-// See: http://www.softwareishard.com/blog/har-12-spec/
+// See [Spec](http://www.softwareishard.com/blog/har-12-spec/)
 package har
 
 import (
 	"encoding/json"
 	"io"
+	"net/http"
 	"os"
+	"strings"
 )
 
 type Creator struct {
@@ -83,6 +85,27 @@ type Request struct {
 	HeadersSize int           `json:"headersSize"`
 	BodySize    int           `json:"bodySize"`
 	Comment     string        `json:"comment,omitempty"`
+}
+
+func (r *Request) Request() (httpreq *http.Request, err error) {
+
+	if len(r.PostData.Text) > 0 {
+		var body *strings.Reader
+		body = strings.NewReader(r.PostData.Text)
+		httpreq, err = http.NewRequest(r.Method, r.URL, body)
+	} else {
+		httpreq, err = http.NewRequest(r.Method, r.URL, nil)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	for i := 0; i < len(r.Headers); i++ {
+		httpreq.Header.Add(r.Headers[i].Name, r.Headers[i].Value)
+	}
+
+	return httpreq, nil
 }
 
 type Content struct {
