@@ -115,12 +115,14 @@ type HAR struct {
 ```go
 func Load(r io.Reader) (*HAR, error)
 ```
+Load a HAR from a reader
 
 #### func  LoadFile
 
 ```go
 func LoadFile(path string) (*HAR, error)
 ```
+Load a HAR from a file
 
 #### type Header
 
@@ -224,6 +226,13 @@ type Request struct {
 }
 ```
 
+
+#### func (*Request) Request
+
+```go
+func (r *Request) Request() (httpreq *http.Request, err error)
+```
+Convert a HAR Request struct to an net/http.Request struct
 
 #### type Response
 

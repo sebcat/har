@@ -87,6 +87,7 @@ type Request struct {
 	Comment     string        `json:"comment,omitempty"`
 }
 
+// Convert a HAR Request struct to an net/http.Request struct
 func (r *Request) Request() (httpreq *http.Request, err error) {
 
 	if len(r.PostData.Text) > 0 {
@@ -181,6 +182,7 @@ type HAR struct {
 	Log Log `json:"log"`
 }
 
+// Load a HAR from a reader
 func Load(r io.Reader) (*HAR, error) {
 	dec := json.NewDecoder(r)
 	x := &HAR{}
@@ -191,6 +193,7 @@ func Load(r io.Reader) (*HAR, error) {
 	return x, nil
 }
 
+// Load a HAR from a file
 func LoadFile(path string) (*HAR, error) {
 	fh, err := os.Open(path)
 	if err != nil {
