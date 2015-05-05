@@ -103,7 +103,9 @@ func (r *Request) Request() (httpreq *http.Request, err error) {
 	}
 
 	for i := 0; i < len(r.Headers); i++ {
-		httpreq.Header.Add(r.Headers[i].Name, r.Headers[i].Value)
+		if !strings.Contains(r.Headers[i].Name, ":") {
+			httpreq.Header.Add(r.Headers[i].Name, r.Headers[i].Value)
+		}
 	}
 
 	return httpreq, nil
