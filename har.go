@@ -3,6 +3,7 @@
 package har
 
 import (
+	"bytes"
 	"encoding/json"
 	"io"
 	"net/http"
@@ -67,11 +68,34 @@ type Param struct {
 	Comment     string `json:"comment,omitempty"`
 }
 
+func (p *Param) Pair() string {
+	if len(p.Value) == 0 {
+		return p.Name
+	} else {
+		return p.Name + "=" + p.Value
+	}
+}
+
 type PostData struct {
 	MIMEType string  `json:"mimeType"`
 	Params   []Param `json:"params"`
 	Text     string  `json:"text"`
 	Comment  string  `json:"comment,omitempty"`
+}
+
+func (p *PostData) Data() string {
+	if len(p.Text) > 0 {
+		return p.Text
+	} else if len(p.Params) > 0 {
+		var b bytes.Buffer
+		for _, p := range p.Params {
+			io.WriteString(&b, p.Pair())
+		}
+
+		return b.String()
+	}
+
+	return ""
 }
 
 type Request struct {
@@ -90,9 +114,10 @@ type Request struct {
 // Convert a HAR Request struct to an net/http.Request struct
 func (r *Request) Request() (httpreq *http.Request, err error) {
 
-	if len(r.PostData.Text) > 0 {
+	dstr := r.PostData.Data()
+	if len(dstr) > 0 {
 		var body *strings.Reader
-		body = strings.NewReader(r.PostData.Text)
+		body = strings.NewReader(dstr)
 		httpreq, err = http.NewRequest(r.Method, r.URL, body)
 	} else {
 		httpreq, err = http.NewRequest(r.Method, r.URL, nil)
