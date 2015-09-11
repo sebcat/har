@@ -3,7 +3,6 @@
 package har
 
 import (
-	"bytes"
 	"encoding/json"
 	"io"
 	"net/http"
@@ -87,12 +86,12 @@ func (p *PostData) Data() string {
 	if len(p.Text) > 0 {
 		return p.Text
 	} else if len(p.Params) > 0 {
-		var b bytes.Buffer
+		var elems []string
 		for _, p := range p.Params {
-			io.WriteString(&b, p.Pair())
+			elems = append(elems, p.Pair())
 		}
 
-		return b.String()
+		return strings.Join(elems, "&")
 	}
 
 	return ""
