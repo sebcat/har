@@ -100,7 +100,7 @@ func (p *PostData) Data() string {
 type Request struct {
 	Method      string        `json:"method"`
 	URL         string        `json:"url"`
-	httpVersion string        `json:"httpVersion"`
+	HTTPVersion string        `json:"httpVersion"`
 	Cookies     []Cookie      `json:"cookies"`
 	Headers     []Header      `json:"headers"`
 	QueryString []QueryString `json:"queryString"`
