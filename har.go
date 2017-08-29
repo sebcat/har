@@ -104,7 +104,7 @@ type Request struct {
 	Cookies     []Cookie      `json:"cookies"`
 	Headers     []Header      `json:"headers"`
 	QueryString []QueryString `json:"queryString"`
-	PostData    PostData      `json:"postData,omitempty"`
+	PostData    *PostData      `json:"postData,omitempty"`
 	HeadersSize int           `json:"headersSize"`
 	BodySize    int           `json:"bodySize"`
 	Comment     string        `json:"comment,omitempty"`
