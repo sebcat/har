@@ -186,6 +186,12 @@ type Param struct {
 ```
 
 
+#### func (*Param) Pair
+
+```go
+func (p *Param) Pair() string
+```
+
 #### type PostData
 
 ```go
@@ -197,6 +203,12 @@ type PostData struct {
 }
 ```
 
+
+#### func (*PostData) Data
+
+```go
+func (p *PostData) Data() string
+```
 
 #### type QueryString
 
@@ -213,13 +225,13 @@ type QueryString struct {
 
 ```go
 type Request struct {
-	Method string `json:"method"`
-	URL    string `json:"url"`
-
+	Method      string        `json:"method"`
+	URL         string        `json:"url"`
+	HTTPVersion string        `json:"httpVersion"`
 	Cookies     []Cookie      `json:"cookies"`
 	Headers     []Header      `json:"headers"`
 	QueryString []QueryString `json:"queryString"`
-	PostData    PostData      `json:"postData,omitempty"`
+	PostData    *PostData     `json:"postData,omitempty"`
 	HeadersSize int           `json:"headersSize"`
 	BodySize    int           `json:"bodySize"`
 	Comment     string        `json:"comment,omitempty"`
