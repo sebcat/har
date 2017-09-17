@@ -68,7 +68,9 @@ type Param struct {
 }
 
 func (p *Param) Pair() string {
-	if len(p.Value) == 0 {
+	if p == nil {
+		return ""
+	} else if len(p.Value) == 0 {
 		return p.Name
 	} else {
 		return p.Name + "=" + p.Value
@@ -83,7 +85,9 @@ type PostData struct {
 }
 
 func (p *PostData) Data() string {
-	if len(p.Text) > 0 {
+	if p == nil {
+		return ""
+	} else if len(p.Text) > 0 {
 		return p.Text
 	} else if len(p.Params) > 0 {
 		var elems []string
