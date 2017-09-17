@@ -117,7 +117,11 @@ type Request struct {
 // Convert a HAR Request struct to an net/http.Request struct
 func (r *Request) Request() (httpreq *http.Request, err error) {
 
-	dstr := r.PostData.Data()
+	var dstr string
+	if r.PostData != nil {
+		dstr = r.PostData.Data()
+	}
+
 	if len(dstr) > 0 {
 		var body *strings.Reader
 		body = strings.NewReader(dstr)
